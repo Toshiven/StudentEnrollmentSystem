@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Student</a>
+    <a href="/instructor">Instructor</a>
+    <a href="/enrollment">Enrollment</a>
+    <a href="/course">Course</a>
+    <a href="/grade">Grade</a>
+    <a href="/semester">Semester</a>
+    <a href="/notification">Notification</a>
+        <form action="" method="post">
+            <div>
+                <input type="number" name="paymentAmount" placeholder="Payment Amount">
+                <input type="number" name="paymentDate" placeholder="Payment Date">
+                <input type="text" name="paymentMethod" placeholder="Payment Method">
+                <input type="text" name="paymentStatus" placeholder="Payment Status">
+            </div>
+            <br>
+            <button>Submit</button>      
+        </form>
+    <table>
+        
+        <% if(details!=null) { %>
+        <tr>
+            <th>Payment Amount</th>
+            <th>Payment Date</th>
+            <th>Payment Method</th>
+            <th>Payment Status</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <% details.forEach(function(item){ %>
+        <tr>
+            <td><%= item.paymentAmount %></td>
+            <td><%= item.paymentDate %></td>
+            <td><%= item.paymentMethod %></td>
+            <td><%= item.paymentStatus %></td>
+            <td>
+                <button class="edit-button">Edit</button>
+            </td>
+            <td><button class="delete-button" data-payment-id="<%= item._id %>">Delete</button></td>
+        </tr>
+
+        <tr class="edit-form" style="display: none;">
+            <td><input type="number" name="paymentAmount" value="<%= item.paymentAmount %>"></td>
+            <td><input type="number" name="paymentDate" value="<%= item.paymentDate %>"></td>
+            <td><input type="text" name="paymentMethod" value="<%= item.paymentMethod %>"></td>
+            <td><input type="text" name="paymentStatus" value="<%= item.paymentStatus %>"></td>
+            <td><button class="update-button" data-payment-id="<%= item._id %>">Update</button></td>
+        </tr>
+        <% })%>
+    </table>
+    <% }%>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-button");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const paymentId = button.getAttribute("data-payment-id");
+                console.log(paymentId)
+                try {
+                    const response = await fetch(`/delete/payment/${paymentId}`, {
+                        method: "DELETE",
+                    });
+    
+                    if (response.ok) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        console.error("Error deleting payment");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+        const editButtons = document.querySelectorAll(".edit-button");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const row = button.parentElement.parentElement;
+                const editForm = row.nextElementSibling; // Get the next row, which is the edit form
+                console.log("clicked edit", editForm)
+                row.style.display = "none";
+                editForm.style.display = "table-row"; // Show the edit form
+            });
+        });
+
+
+        const updateButtons = document.querySelectorAll(".update-button");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                console.log('update clicked!')
+                const editForm = button.parentElement.parentElement;
+                const row = editForm.previousElementSibling; // Get the previous row, which is the data row
+                const cells = row.querySelectorAll("td"); // Get all cells in the data row
+
+                const paymentId = button.getAttribute("data-payment-id");
+
+                const requestBody = {
+                    paymentAmount: editForm.querySelector('input[name="paymentAmount"]').value,
+                    paymentDate: editForm.querySelector('input[name="paymentDate"]').value,
+                    paymentMethod: editForm.querySelector('input[name="paymentMethod"]').value,
+                    paymentStatus: editForm.querySelector('input[name="paymentStatus"]').value
+                };
+
+                console.log(requestBody)
+
+                try {
+                    const response = await fetch(`/update/payment/${paymentId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        console.log("PUT request successful");
+                        // Reload the page or perform any necessary actions
+                        window.location.reload();
+                    } else {
+                        console.error("Error in PUT request");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

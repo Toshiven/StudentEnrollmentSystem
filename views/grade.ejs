@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Student</a>
+    <a href="/instructor">Instructor</a>
+    <a href="/enrollment">Enrollment</a>
+    <a href="/course">Course</a>
+    <a href="/Semester">Semester</a>
+    <a href="/payment">Payment</a>
+    <a href="/notification">Notification</a>
+        <form action="" method="post">
+            <div>
+                <input type="number" name="grade" placeholder="Grade">
+                <input type="number" name="exam" placeholder="Exam Scores">
+                <input type="number" name="finalGrade" placeholder="Final Grade">
+                <input type="text" name="semester" placeholder="Semester">
+            </div>
+            <br>
+            <button>Submit</button>      
+        </form>
+    <table>
+        
+        <% if(details!=null) { %>
+        <tr>
+            <th>Grade</th>
+            <th>Exam Scores</th>
+            <th>Final Grade</th>
+            <th>Semester</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <% details.forEach(function(item){ %>
+        <tr>
+            <td><%= item.grade %></td>
+            <td><%= item.exam %></td>
+            <td><%= item.finalGrade %></td>
+            <td><%= item.semester %></td>
+            <td>
+                <button class="edit-button">Edit</button>
+            </td>
+            <td><button class="delete-button" data-grade-id="<%= item._id %>">Delete</button></td>
+        </tr>
+
+        <tr class="edit-form" style="display: none;">
+            <td><input type="number" name="grade" value="<%= item.grade %>"></td>
+            <td><input type="number" name="exam" value="<%= item.exam %>"></td>
+            <td><input type="number" name="finalGrade" value="<%= item.finalGrade %>"></td>
+            <td><input type="text" name="semester" value="<%= item.semester %>"></td>
+            <td><button class="update-button" data-grade-id="<%= item._id %>">Update</button></td>
+        </tr>
+        <% })%>
+    </table>
+    <% }%>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-button");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const gradeId = button.getAttribute("data-grade-id");
+                console.log(gradeId)
+                try {
+                    const response = await fetch(`/delete/grade/${gradeId}`, {
+                        method: "DELETE",
+                    });
+    
+                    if (response.ok) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        console.error("Error deleting grade");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+        const editButtons = document.querySelectorAll(".edit-button");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const row = button.parentElement.parentElement;
+                const editForm = row.nextElementSibling; // Get the next row, which is the edit form
+                console.log("clicked edit", editForm)
+                row.style.display = "none";
+                editForm.style.display = "table-row"; // Show the edit form
+            });
+        });
+
+
+        const updateButtons = document.querySelectorAll(".update-button");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                console.log('update clicked!')
+                const editForm = button.parentElement.parentElement;
+                const row = editForm.previousElementSibling; // Get the previous row, which is the data row
+                const cells = row.querySelectorAll("td"); // Get all cells in the data row
+
+                const gradeId = button.getAttribute("data-grade-id");
+
+                const requestBody = {
+                    grade: editForm.querySelector('input[name="grade"]').value,
+                    exam: editForm.querySelector('input[name="exam"]').value,
+                    finalGrade: editForm.querySelector('input[name="finalGrade"]').value,
+                    semester: editForm.querySelector('input[name="semester"]').value,
+                };
+
+                console.log(requestBody)
+
+                try {
+                    const response = await fetch(`/update/grade/${gradeId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        console.log("PUT request successful");
+                        // Reload the page or perform any necessary actions
+                        window.location.reload();
+                    } else {
+                        console.error("Error in PUT request");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

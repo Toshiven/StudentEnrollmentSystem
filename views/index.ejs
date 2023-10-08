@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/course">Course</a>
+    <a href="/instructor">Instructor</a>
+    <a href="/enrollment">Enrollment</a>
+    <a href="/grade">Grade</a>
+    <a href="/course">Course</a>
+    <a href="/semester">Semester</a>
+    <a href="/payment">Payment</a>
+    <a href="/notification">Notification</a>
+        <form action="" method="post">
+            <div>
+                <input type="text" name="firstName" placeholder="firstName">
+                <input type="text" name="lastName" placeholder="lastName">
+                <input type="text" name="birth" placeholder="birth">
+                <input type="text" name="gender" placeholder="gender">
+                <input type="text" name="contact" placeholder="contact">
+                <input type="text" name="address" placeholder="address">
+                <input type="text" name="guardian" placeholder="guardian">
+            </div>
+            <br>
+            <button>Submit</button>      
+        </form>
+    <table>
+        
+        <% if(details!=null) { %>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Contact Information</th>
+            <th>Address</th>
+            <th>Guardian</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <% details.forEach(function(item){ %>
+        <tr>
+            <td><%= item.firstName %></td>
+            <td><%= item.lastName %></td>
+            <td><%= item.birth %></td>
+            <td><%= item.gender %></td>
+            <td><%= item.contact %></td>
+            <td><%= item.address %></td>
+            <td><%= item.guardian %></td>
+            <td>
+                <button class="edit-button">Edit</button>
+            </td>
+            <td><button class="delete-button" data-student-id="<%= item._id %>">Delete</button></td>
+        </tr>
+
+        <tr class="edit-form" style="display: none;">
+            <td><input type="text" name="firstName" value="<%= item.firstName %>"></td>
+            <td><input type="text" name="lastName" value="<%= item.lastName %>"></td>
+            <td><input type="text" name="birth" value="<%= item.birth %>"></td>
+            <td><input type="text" name="gender" value="<%= item.gender %>"></td>
+            <td><input type="text" name="contact" value="<%= item.contact %>"></td>
+            <td><input type="text" name="address" value="<%= item.address %>"></td>
+            <td><input type="text" name="guardian" value="<%= item.guardian %>"></td>
+            <td><button class="update-button" data-student-id="<%= item._id %>">Update</button></td>
+        </tr>
+        <% })%>
+    </table>
+    <% }%>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-button");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                const studentId = button.getAttribute("data-student-id");
+    
+                try {
+                    const response = await fetch(`/delete/student/${studentId}`, {
+                        method: "DELETE",
+                    });
+    
+                    if (response.ok) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        console.error("Error deleting student");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+        const editButtons = document.querySelectorAll(".edit-button");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const row = button.parentElement.parentElement;
+                const editForm = row.nextElementSibling; // Get the next row, which is the edit form
+                row.style.display = "none";
+                editForm.style.display = "table-row"; // Show the edit form
+            });
+        });
+
+
+        const updateButtons = document.querySelectorAll(".update-button");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                console.log('event listener clicked!')
+                const editForm = button.parentElement.parentElement;
+                const row = editForm.previousElementSibling; // Get the previous row, which is the data row
+                const cells = row.querySelectorAll("td"); // Get all cells in the data row
+
+                const studentId = button.getAttribute("data-student-id");
+
+                const requestBody = {
+                    firstName: editForm.querySelector('input[name="firstName"]').value,
+                    lastName: editForm.querySelector('input[name="lastName"]').value,
+                    birth: editForm.querySelector('input[name="birth"]').value,
+                    gender: editForm.querySelector('input[name="gender"]').value,
+                    contact: editForm.querySelector('input[name="contact"]').value,
+                    address: editForm.querySelector('input[name="address"]').value,
+                    guardian: editForm.querySelector('input[name="guardian"]').value
+                };
+
+                console.log(requestBody)
+
+                try {
+                    const response = await fetch(`/update/student/${studentId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        console.log("PUT request successful");
+                        // Reload the page or perform any necessary actions
+                        window.location.reload();
+                    } else {
+                        console.error("Error in PUT request");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+
+
+    </script>
+    
+</body>
+</html>

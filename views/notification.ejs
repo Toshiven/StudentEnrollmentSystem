@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Student</a>
+    <a href="/instructor">Instructor</a>
+    <a href="/enrollment">Enrollment</a>
+    <a href="/course">Course</a>
+    <a href="/grade">Grade</a>
+    <a href="/semester">Semester</a>
+    <a href="/payment">Payment</a>
+        <form action="" method="post">
+            <div>
+                <input type="text" name="type" placeholder="Notification Type">
+                <input type="text" name="content" placeholder="Content">
+                <input type="text" name="timestamp" placeholder="Timestamp">
+                <input type="text" name="status" placeholder="Status">
+            </div>
+            <br>
+            <button>Submit</button>      
+        </form>
+    <table>
+        
+        <% if(details!=null) { %>
+        <tr>
+            <th>Notification Type</th>
+            <th>Content</th>
+            <th>Timestamp</th>
+            <th>Status</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <% details.forEach(function(item){ %>
+        <tr>
+            <td><%= item.type %></td>
+            <td><%= item.content %></td>
+            <td><%= item.timestamp %></td>
+            <td><%= item.status %></td>
+            <td>
+                <button class="edit-button">Edit</button>
+            </td>
+            <td><button class="delete-button" data-notification-id="<%= item._id %>">Delete</button></td>
+        </tr>
+
+        <tr class="edit-form" style="display: none;">
+            <td><input type="text" name="type" value="<%= item.type %>"></td>
+            <td><input type="text" name="content" value="<%= item.content %>"></td>
+            <td><input type="text" name="timestamp" value="<%= item.timestamp %>"></td>
+            <td><input type="text" name="status" value="<%= item.status %>"></td>
+            <td><button class="update-button" data-notification-id="<%= item._id %>">Update</button></td>
+        </tr>
+        <% })%>
+    </table>
+    <% }%>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-button");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const notificationId = button.getAttribute("data-notification-id");
+                console.log(notificationId)
+                try {
+                    const response = await fetch(`/delete/notification/${notificationId}`, {
+                        method: "DELETE",
+                    });
+    
+                    if (response.ok) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        console.error("Error deleting notification");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+        const editButtons = document.querySelectorAll(".edit-button");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const row = button.parentElement.parentElement;
+                const editForm = row.nextElementSibling; // Get the next row, which is the edit form
+                console.log("clicked edit", editForm)
+                row.style.display = "none";
+                editForm.style.display = "table-row"; // Show the edit form
+            });
+        });
+
+
+        const updateButtons = document.querySelectorAll(".update-button");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                console.log('update clicked!')
+                const editForm = button.parentElement.parentElement;
+                const row = editForm.previousElementSibling; // Get the previous row, which is the data row
+                const cells = row.querySelectorAll("td"); // Get all cells in the data row
+
+                const notificationId = button.getAttribute("data-notification-id");
+
+                const requestBody = {
+                    type: editForm.querySelector('input[name="type"]').value,
+                    content: editForm.querySelector('input[name="content"]').value,
+                    timestamp: editForm.querySelector('input[name="timestamp"]').value,
+                    status: editForm.querySelector('input[name="status"]').value
+                };
+
+                console.log(requestBody)
+
+                try {
+                    const response = await fetch(`/update/notification/${notificationId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        console.log("PUT request successful");
+                        // Reload the page or perform any necessary actions
+                        window.location.reload();
+                    } else {
+                        console.error("Error in PUT request");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

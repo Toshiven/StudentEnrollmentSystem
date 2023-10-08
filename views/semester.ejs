@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        table, th, td{
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="/">Student</a>
+    <a href="/instructor">Instructor</a>
+    <a href="/enrollment">Enrollment</a>
+    <a href="/course">Course</a>
+    <a href="/grade">Grade</a>
+    <a href="/payment">Payment</a>
+    <a href="/notification">Notification</a>
+        <form action="" method="post">
+            <div>
+                <input type="text" name="semesterName" placeholder="Semester Name">
+                <input type="number" name="startDate" placeholder="Start Date">
+                <input type="number" name="endDate" placeholder="End Date">
+                <input type="number" name="registrationDeadline" placeholder="Registration Deadline">
+            </div>
+            <br>
+            <button>Submit</button>      
+        </form>
+    <table>
+        
+        <% if(details!=null) { %>
+        <tr>
+            <th>Semester Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Registration Deadline</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <% details.forEach(function(item){ %>
+        <tr>
+            <td><%= item.semesterName %></td>
+            <td><%= item.startDate %></td>
+            <td><%= item.endDate %></td>
+            <td><%= item.registrationDeadline %></td>
+            <td>
+                <button class="edit-button">Edit</button>
+            </td>
+            <td><button class="delete-button" data-semester-id="<%= item._id %>">Delete</button></td>
+        </tr>
+
+        <tr class="edit-form" style="display: none;">
+            <td><input type="text" name="semesterName" value="<%= item.semesterName %>"></td>
+            <td><input type="number" name="startDate" value="<%= item.startDate %>"></td>
+            <td><input type="number" name="endDate" value="<%= item.endDate %>"></td>
+            <td><input type="number" name="registrationDeadline" value="<%= item.registrationDeadline %>"></td>
+            <td><button class="update-button" data-semester-id="<%= item._id %>">Update</button></td>
+        </tr>
+        <% })%>
+    </table>
+    <% }%>
+
+    <script>
+        const deleteButtons = document.querySelectorAll(".delete-button");
+    
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                const semesterId = button.getAttribute("data-semester-id");
+                console.log(semesterId)
+                try {
+                    const response = await fetch(`/delete/semester/${semesterId}`, {
+                        method: "DELETE",
+                    });
+    
+                    if (response.ok) {
+                        // Reload the page after successful deletion
+                        window.location.reload();
+                    } else {
+                        console.error("Error deleting semester");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+
+
+        const editButtons = document.querySelectorAll(".edit-button");
+
+        editButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const row = button.parentElement.parentElement;
+                const editForm = row.nextElementSibling; // Get the next row, which is the edit form
+                console.log("clicked edit", editForm)
+                row.style.display = "none";
+                editForm.style.display = "table-row"; // Show the edit form
+            });
+        });
+
+
+        const updateButtons = document.querySelectorAll(".update-button");
+
+        updateButtons.forEach(button => {
+            button.addEventListener("click", async () => {
+                console.log('update clicked!')
+                const editForm = button.parentElement.parentElement;
+                const row = editForm.previousElementSibling; // Get the previous row, which is the data row
+                const cells = row.querySelectorAll("td"); // Get all cells in the data row
+
+                const semesterId = button.getAttribute("data-semester-id");
+
+                const requestBody = {
+                    semesterName: editForm.querySelector('input[name="semesterName"]').value,
+                    startDate: editForm.querySelector('input[name="startDate"]').value,
+                    endDate: editForm.querySelector('input[name="endDate"]').value,
+                    registrationDeadline: editForm.querySelector('input[name="registrationDeadline"]').value
+                };
+
+                console.log(requestBody)
+
+                try {
+                    const response = await fetch(`/update/semester/${semesterId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (response.ok) {
+                        console.log("PUT request successful");
+                        // Reload the page or perform any necessary actions
+                        window.location.reload();
+                    } else {
+                        console.error("Error in PUT request");
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
