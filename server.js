@@ -49,6 +49,14 @@ const instructorSchema = {
 }
 
 const enrollmentSchema = {
+    student: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'student'
+    },
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'course'
+    },
     date: String,
     status: String
 }
@@ -317,8 +325,16 @@ app.put("/update/instructor/:instructorId", async (req, res) => {
 
 app.get("/enrollment", async (req, res) => {
     try {
-        const enrollmentList = await enrollment.find({});
-        res.render("enrollment", { details: enrollmentList });
+        const enrollmentList = await enrollment.find({})
+            .populate('student') // Populate the student field
+            .populate('course'); // Populate the course field
+        
+        // Add code to retrieve the list of students and courses here
+        const students = await student.find({}); // Replace this with the actual code to fetch students
+        const courses = await course.find({}); // Replace this with the actual code to fetch courses
+        
+        res.render("enrollment", { details: enrollmentList, students, courses });
+        console.log(enrollmentList)
     } catch (err) {
         console.error(err);
         res.render("error", { errorMessage: "An error occurred while loading the enrollment data." });
@@ -328,9 +344,23 @@ app.get("/enrollment", async (req, res) => {
 app.post("/enrollment", async (req, res) => {
     console.log('posting...')
     try {
+        const selectedStudentId = req.body.student;
+        const selectedCourseId = req.body.course;
+
+        // Fetch the selected student and course from the database based on their IDs
+        const selectedStudent = await student.findById(selectedStudentId);
+        const selectedCourse = await course.findById(selectedCourseId);
+
+        if (!selectedStudent || !selectedCourse) {
+            // Handle the case where the selected student or course is not found
+            return res.render("error", { errorMessage: "Selected student or course not found." });
+        }
+
         let newEnrollment = new enrollment({
             date: req.body.date,
             status: req.body.status,
+            student: selectedStudent, // Assign the selected student to the enrollment
+            course: selectedCourse, // Assign the selected course to the enrollment
         });
 
         await newEnrollment.save();
@@ -363,6 +393,8 @@ app.put("/update/enrollment/:enrollmentId", async (req, res) => {
         const updatedEnrollment = await enrollment.findByIdAndUpdate(
             enrollmentIdToUpdate,
             {
+                student: req.body.student,
+                course: req.body.course,
                 date: req.body.date,
                 status: req.body.status,
             },
