@@ -14,38 +14,38 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-    <a href="/">Student</a>
-    <a href="/course">Course</a>
-    <a href="/instructor">Instructor</a>
-    <a href="/course">Course</a>
-    <a href="/grade">Grade</a>
-    <a href="/semester">Semester</a>
-    <a href="/payment">Payment</a>
-    <a href="/notification">Notification</a>
-        <form action="" method="post">
-            <div>
-                <label for="student">Select Student:</label>
-                <select id="student" name="student">
-                    <% students.forEach(function(student) { %>
-                        <option value="<%= student._id %>"><%= student.firstName %> <%= student.lastName %></option>
-                    <% }); %>
-                </select>
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="student">Select Student:</label>
+                    <select class="form-control" id="student" name="student">
+                        <% students.forEach(function(student) { %>
+                            <option value="<%= student._id %>"><%= student.firstName %> <%= student.lastName %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="course">Select Course:</label>
+                    <select class="form-control" id="course" name="course">
+                        <% courses.forEach(function(course) { %>
+                            <option value="<%= course._id %>"><%= course.courseName %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="date">Enrollment Date:</label>
+                    <input type="text" class="form-control" id="date" name="date" placeholder="Enrollment Date">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="status">Enrollment Status:</label>
+                    <input type="text" class="form-control" id="status" name="status" placeholder="Enrollment Status">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <div>
-                <label for="course">Select Course:</label>
-                <select id="course" name="course">
-                    <% courses.forEach(function(course) { %>
-                        <option value="<%= course._id %>"><%= course.courseName %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <div>
-                <input type="text" name="date" placeholder="Enrollment Date">
-                <input type="text" name="status" placeholder="Enrollment Status">
-            </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
     <table>
         
         <% if(details!=null) { %>

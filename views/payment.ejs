@@ -14,23 +14,30 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-    <a href="/">Student</a>
-    <a href="/instructor">Instructor</a>
-    <a href="/enrollment">Enrollment</a>
-    <a href="/course">Course</a>
-    <a href="/grade">Grade</a>
-    <a href="/semester">Semester</a>
-    <a href="/notification">Notification</a>
-        <form action="" method="post">
-            <div>
-                <input type="number" name="paymentAmount" placeholder="Payment Amount">
-                <input type="number" name="paymentDate" placeholder="Payment Date">
-                <input type="text" name="paymentMethod" placeholder="Payment Method">
-                <input type="text" name="paymentStatus" placeholder="Payment Status">
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="paymentAmount">Payment Amount:</label>
+                    <input type="number" class="form-control" id="paymentAmount" name="paymentAmount" placeholder="Payment Amount">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="paymentDate">Payment Date:</label>
+                    <input type="number" class="form-control" id="paymentDate" name="paymentDate" placeholder="Payment Date">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="paymentMethod">Payment Method:</label>
+                    <input type="text" class="form-control" id="paymentMethod" name="paymentMethod" placeholder="Payment Method">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="paymentStatus">Payment Status:</label>
+                    <input type="text" class="form-control" id="paymentStatus" name="paymentStatus" placeholder="Payment Status">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
     <table>
         
         <% if(details!=null) { %>

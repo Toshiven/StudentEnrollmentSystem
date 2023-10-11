@@ -14,23 +14,30 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-    <a href="/">Student</a>
-    <a href="/instructor">Instructor</a>
-    <a href="/enrollment">Enrollment</a>
-    <a href="/course">Course</a>
-    <a href="/Semester">Semester</a>
-    <a href="/payment">Payment</a>
-    <a href="/notification">Notification</a>
-        <form action="" method="post">
-            <div>
-                <input type="number" name="grade" placeholder="Grade">
-                <input type="number" name="exam" placeholder="Exam Scores">
-                <input type="number" name="finalGrade" placeholder="Final Grade">
-                <input type="text" name="semester" placeholder="Semester">
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="grade">Grade:</label>
+                    <input type="number" class="form-control" id="grade" name="grade" placeholder="Grade">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="exam">Exam Scores:</label>
+                    <input type="number" class="form-control" id="exam" name="exam" placeholder="Exam Scores">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="finalGrade">Final Grade:</label>
+                    <input type="number" class="form-control" id="finalGrade" name="finalGrade" placeholder="Final Grade">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="semester">Semester:</label>
+                    <input type="text" class="form-control" id="semester" name="semester" placeholder="Semester">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
     <table>
         
         <% if(details!=null) { %>

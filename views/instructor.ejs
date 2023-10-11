@@ -14,25 +14,34 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-    <a href="/">Student</a>
-    <a href="/course">Course</a>
-    <a href="/enrollment">Enrollment</a>
-    <a href="/instructor">Instructor</a>
-    <a href="/grade">Grade</a>
-    <a href="/semester">Semester</a>
-    <a href="/payment">Payment</a>
-    <a href="/notification">Notification</a>
-        <form action="" method="post">
-            <div>
-                <input type="text" name="firstName" placeholder="firstName">
-                <input type="text" name="lastName" placeholder="lastName">
-                <input type="text" name="contactInformation" placeholder="contact information">
-                <input type="text" name="department" placeholder="department">
-                <input type="text" name="officeHours" placeholder="officeHours">
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contactInformation">Contact Information:</label>
+                    <input type="text" class="form-control" id="contactInformation" name="contactInformation" placeholder="Contact Information">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="department">Department:</label>
+                    <input type="text" class="form-control" id="department" name="department" placeholder="Department">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="officeHours">Office Hours:</label>
+                    <input type="text" class="form-control" id="officeHours" name="officeHours" placeholder="Office Hours">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
     <table>
         
         <% if(details!=null) { %>

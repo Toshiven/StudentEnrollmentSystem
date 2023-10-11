@@ -14,19 +14,43 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-        <form action="" method="post">
-            <div class="form-row">
-                <input type="text" name="firstName" placeholder="firstName">
-                <input type="text" name="lastName" placeholder="lastName">
-                <input type="text" name="birth" placeholder="birth">
-                <input type="text" name="gender" placeholder="gender">
-                <input type="text" name="contact" placeholder="contact">
-                <input type="text" name="address" placeholder="address">
-                <input type="text" name="guardian" placeholder="guardian">
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="birth">Date of Birth:</label>
+                    <input type="text" class="form-control" id="birth" name="birth" placeholder="Date of Birth">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="gender">Gender:</label>
+                    <input type="text" class="form-control" id="gender" name="gender" placeholder="Gender">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="contact">Contact Information:</label>
+                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact Information">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="address">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="guardian">Guardian:</label>
+                    <input type="text" class="form-control" id="guardian" name="guardian" placeholder="Guardian">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
+    
     <table>
         
         <% if(details!=null) { %>

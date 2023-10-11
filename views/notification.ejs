@@ -14,23 +14,30 @@
 </head>
 <body>
     <%- include('header.ejs') %>
-    <a href="/">Student</a>
-    <a href="/instructor">Instructor</a>
-    <a href="/enrollment">Enrollment</a>
-    <a href="/course">Course</a>
-    <a href="/grade">Grade</a>
-    <a href="/semester">Semester</a>
-    <a href="/payment">Payment</a>
-        <form action="" method="post">
-            <div>
-                <input type="text" name="type" placeholder="Notification Type">
-                <input type="text" name="content" placeholder="Content">
-                <input type="text" name="timestamp" placeholder="Timestamp">
-                <input type="text" name="status" placeholder="Status">
+    <form action="" method="post">
+        <div class="container">
+            <div class="form-row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <label for="type">Notification Type:</label>
+                    <input type="text" class="form-control" id="type" name="type" placeholder="Notification Type">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="content">Content:</label>
+                    <input type="text" class="form-control" id="content" name="content" placeholder="Content">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="timestamp">Timestamp:</label>
+                    <input type="text" class="form-control" id="timestamp" name="timestamp" placeholder="Timestamp">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="status">Status:</label>
+                    <input type="text" class="form-control" id="status" name="status" placeholder="Status">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <br>
-            <button>Submit</button>      
-        </form>
+        </div>
+    </form>
+    
     <table>
         
         <% if(details!=null) { %>
