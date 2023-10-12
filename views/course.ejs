@@ -30,8 +30,12 @@
                     <input type="text" class="form-control" id="description" name="description" placeholder="Description">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="instructor">Instructor:</label>
-                    <input type="text" class="form-control" id="instructor" name="instructor" placeholder="Instructor">
+                    <label for="instructor">Select Instructor:</label>
+                    <select class="form-control" id="instructor" name="instructor">
+                        <% instructors.forEach(function(instructor) { %>
+                            <option value="<%= instructor._id %>"><%= instructor.firstName %> <%= instructor.lastName %></option>
+                        <% }); %>
+                    </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="creditHours">Credit Hours:</label>
@@ -68,7 +72,13 @@
             <td><%= item.courseName %></td>
             <td><%= item.courseCode %></td>
             <td><%= item.description %></td>
-            <td><%= item.instructor %></td>
+            <td>
+                <% if (item.instructor) { %>
+                  <%= item.instructor.firstName %> <%= item.instructor.lastName %>
+                <% } else { %>
+                  N/A <!-- or any other default value you prefer -->
+                <% } %>
+            </td>
             <td><%= item.creditHours %></td>
             <td><%= item.maximumEnrollment %></td>
             <td><%= item.semester %></td>
@@ -82,7 +92,14 @@
             <td><input type="text" name="courseName" value="<%= item.courseName %>"></td>
             <td><input type="text" name="courseCode" value="<%= item.courseCode %>"></td>
             <td><input type="text" name="description" value="<%= item.description %>"></td>
-            <td><input type="text" name="instructor" value="<%= item.instructor %>"></td>
+            <td>
+                <label for="student">Select Instructor:</label>
+                <select class="instructor-select" name="instructor">
+                    <% instructors.forEach(function(instructor) { %>
+                        <option value="<%= instructor._id %>"><%= instructor.firstName %> <%= instructor.lastName %></option>
+                    <% }); %>
+                </select>
+            </td>
             <td><input type="text" name="creditHours" value="<%= item.creditHours %>"></td>
             <td><input type="text" name="maximumEnrollment" value="<%= item.maximumEnrollment %>"></td>
             <td><input type="text" name="semester" value="<%= item.semester %>"></td>
@@ -139,6 +156,7 @@
                 const editForm = button.parentElement.parentElement;
                 const row = editForm.previousElementSibling; // Get the previous row, which is the data row
                 const cells = row.querySelectorAll("td"); // Get all cells in the data row
+                const instructorSelect = editForm.querySelector(".instructor-select");
 
                 const courseId = button.getAttribute("data-course-id");
 
@@ -147,7 +165,7 @@
                     courseCode: editForm.querySelector('input[name="courseCode"]').value,
                     description: editForm.querySelector('input[name="description"]').value,
                     creditHours: editForm.querySelector('input[name="creditHours"]').value,
-                    instructor: editForm.querySelector('input[name="instructor"]').value,
+                    instructor: instructorSelect.value,
                     maximumEnrollment: editForm.querySelector('input[name="maximumEnrollment"]').value,
                     semester: editForm.querySelector('input[name="semester"]').value
                 };

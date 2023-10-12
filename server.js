@@ -34,7 +34,10 @@ const courseSchema = {
     courseName: String,
     courseCode: String,
     description: String,
-    instructor: String,
+    instructor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'instructor'
+    },
     creditHours: String,
     maximumEnrollment: String,
     semester: String
@@ -178,8 +181,14 @@ app.put("/update/student/:studentId", async (req, res) => {
 
 app.get('/course', async (req, res) => {
     try {
-        const courseList = await course.find({});
-        res.render("course", { details: courseList });
+
+            const courseList = await course.find({})
+            .populate('instructor') // Populate the instructor
+
+        const instructors = await instructor.find({}); 
+        
+        res.render("course", { details: courseList, instructors });
+        console.log(courseList)
     } catch (err) {
         console.error(err);
         res.render("error", { errorMessage: "An error occurred while loading the course data." });
