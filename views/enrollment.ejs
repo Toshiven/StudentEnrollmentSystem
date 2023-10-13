@@ -50,6 +50,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>Student Name</th>
             <th>Course</th>
             <th>Enrollment Date</th>
@@ -58,6 +59,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td>
                 <% if (item.student) { %>
                   <%= item.student.firstName %> <%= item.student.lastName %>
@@ -81,6 +83,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" disabled></td>
             <td>
                 <label for="student">Select Student:</label>
                 <select class="student-select" name="student">

@@ -21,6 +21,7 @@ mongoose.connect('mongodb://localhost:27017/StudentEnrollmentSystem')
 })
 
 const studentSchema = {
+    id: Number,
     firstName: String,
     lastName: String,
     birth: String,
@@ -31,6 +32,7 @@ const studentSchema = {
 }
 
 const courseSchema = {
+    id: Number,
     courseName: String,
     courseCode: String,
     description: String,
@@ -44,6 +46,7 @@ const courseSchema = {
 }
 
 const instructorSchema = {
+    id: Number,
     firstName: String,
     lastName: String,
     contactInformation: String,
@@ -52,6 +55,7 @@ const instructorSchema = {
 }
 
 const enrollmentSchema = {
+    id: Number,
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'student'
@@ -65,6 +69,8 @@ const enrollmentSchema = {
 }
 
 const gradeSchema = {
+    id: Number,
+    id: Number,
     grade: Number,
     exam: Number,
     finalGrade: Number,
@@ -72,6 +78,7 @@ const gradeSchema = {
 }
 
 const semesterSchema = {
+    id: Number,
     semesterName: String,
     startDate: Number,
     endDate: Number,
@@ -79,6 +86,7 @@ const semesterSchema = {
 }
 
 const paymentSchema = {
+    id: Number,
     paymentAmount: Number,
     paymentDate: Number,
     paymentMethod: String,
@@ -86,6 +94,7 @@ const paymentSchema = {
 }
 
 const notificationSchema = {
+    id: Number,
     type: String,
     content: String,
     timestamp: String,
@@ -115,8 +124,11 @@ app.get('/', async (req, res) => {
 
 app.post("/", async (req, res) => {
     console.log('posting...')
+    const nextStudentId = await student.countDocuments({}) + 1001;
+
     try {
         let newStudent = new student({
+            id: nextStudentId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             birth: req.body.birth,
@@ -197,8 +209,11 @@ app.get('/course', async (req, res) => {
 
 app.post("/course", async (req, res) => {
     console.log('posting...')
+    const nextCourseId = await course.countDocuments({}) + 1001;
+
     try {
         let newCourse = new course({
+            id: nextCourseId,
             courseName: req.body.courseName,
             courseCode: req.body.courseCode,
             description: req.body.description,
@@ -273,8 +288,10 @@ app.get("/instructor", async (req, res) => {
 
 app.post("/instructor", async (req, res) => {
     console.log('posting...')
+    const nextInstructorId = await instructor.countDocuments({}) + 1001;
     try {
         let newInstructor = new instructor({
+            id: nextInstructorId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             contactInformation: req.body.contactInformation,
@@ -352,6 +369,8 @@ app.get("/enrollment", async (req, res) => {
 
 app.post("/enrollment", async (req, res) => {
     console.log('posting...')
+    const nextEnrollmentId = await enrollment.countDocuments({}) + 1001;
+
     try {
         const selectedStudentId = req.body.student;
         const selectedCourseId = req.body.course;
@@ -366,6 +385,7 @@ app.post("/enrollment", async (req, res) => {
         }
 
         let newEnrollment = new enrollment({
+            id: nextEnrollmentId,
             date: req.body.date,
             status: req.body.status,
             student: selectedStudent, // Assign the selected student to the enrollment
@@ -433,8 +453,10 @@ app.get("/grade", async (req, res) => {
 
 app.post("/grade", async (req, res) => {
     console.log('posting...')
+    const nextGradeId = await grade.countDocuments({}) + 1001;
     try {
         let newGrade = new grade({
+            id: nextGradeId,
             grade: req.body.grade,
             exam: req.body.exam,
             finalGrade: req.body.finalGrade,
@@ -502,8 +524,11 @@ app.get("/semester", async (req, res) => {
 
 app.post("/semester", async (req, res) => {
     console.log('posting...')
+    const nextSemesterId = await semester.countDocuments({}) + 1001;
+
     try {
         let newSemester = new semester({
+            id: nextSemesterId,
             semesterName: req.body.semesterName,
             startDate: req.body.startDate,
             endDate: req.body.endDate,
@@ -571,8 +596,10 @@ app.get("/payment", async (req, res) => {
 
 app.post("/payment", async (req, res) => {
     console.log('posting...')
+    const nextPaymentId = await payment.countDocuments({}) + 1001;
     try {
         let newPayment = new payment({
+            id: nextPaymentId,
             paymentAmount: req.body.paymentAmount,
             paymentDate: req.body.paymentDate,
             paymentMethod: req.body.paymentMethod,
@@ -640,8 +667,10 @@ app.get("/notification", async (req, res) => {
 
 app.post("/notification", async (req, res) => {
     console.log('posting...')
+    const nextNotificationId = await notification.countDocuments({}) + 1001;
     try {
         let newNotification = new notification({
+            id: nextNotificationId,
             type: req.body.type,
             content: req.body.content,
             timestamp: req.body.timestamp,

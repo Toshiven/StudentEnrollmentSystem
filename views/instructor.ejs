@@ -46,6 +46,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Contact Information</th>
@@ -55,6 +56,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td><%= item.firstName %></td>
             <td><%= item.lastName %></td>
             <td><%= item.contactInformation %></td>
@@ -67,6 +69,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" disabled></td>
             <td><input type="text" name="firstName" value="<%= item.firstName %>"></td>
             <td><input type="text" name="lastName" value="<%= item.lastName %>"></td>
             <td><input type="text" name="contactInformation" value="<%= item.contactInformation %>"></td>

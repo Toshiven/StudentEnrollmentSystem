@@ -42,6 +42,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>Payment Amount</th>
             <th>Payment Date</th>
             <th>Payment Method</th>
@@ -50,6 +51,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td><%= item.paymentAmount %></td>
             <td><%= item.paymentDate %></td>
             <td><%= item.paymentMethod %></td>
@@ -61,6 +63,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" name="" id="" disabled></td>
             <td><input type="number" name="paymentAmount" value="<%= item.paymentAmount %>"></td>
             <td><input type="number" name="paymentDate" value="<%= item.paymentDate %>"></td>
             <td><input type="text" name="paymentMethod" value="<%= item.paymentMethod %>"></td>

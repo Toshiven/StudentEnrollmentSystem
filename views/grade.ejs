@@ -42,6 +42,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>Grade</th>
             <th>Exam Scores</th>
             <th>Final Grade</th>
@@ -50,6 +51,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td><%= item.grade %></td>
             <td><%= item.exam %></td>
             <td><%= item.finalGrade %></td>
@@ -61,6 +63,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" name="" id="" disabled></td>
             <td><input type="number" name="grade" value="<%= item.grade %>"></td>
             <td><input type="number" name="exam" value="<%= item.exam %>"></td>
             <td><input type="number" name="finalGrade" value="<%= item.finalGrade %>"></td>

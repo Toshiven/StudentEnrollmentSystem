@@ -42,6 +42,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>Notification Type</th>
             <th>Content</th>
             <th>Timestamp</th>
@@ -50,6 +51,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td><%= item.type %></td>
             <td><%= item.content %></td>
             <td><%= item.timestamp %></td>
@@ -61,6 +63,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" disabled></td>
             <td><input type="text" name="type" value="<%= item.type %>"></td>
             <td><input type="text" name="content" value="<%= item.content %>"></td>
             <td><input type="text" name="timestamp" value="<%= item.timestamp %>"></td>

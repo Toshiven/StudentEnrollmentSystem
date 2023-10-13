@@ -42,6 +42,7 @@
         
         <% if(details!=null) { %>
         <tr>
+            <th>ID</th>
             <th>Semester Name</th>
             <th>Start Date</th>
             <th>End Date</th>
@@ -50,6 +51,7 @@
         </tr>
         <% details.forEach(function(item){ %>
         <tr>
+            <td><%= item.id %></td>
             <td><%= item.semesterName %></td>
             <td><%= item.startDate %></td>
             <td><%= item.endDate %></td>
@@ -61,6 +63,7 @@
         </tr>
 
         <tr class="edit-form" style="display: none;">
+            <td><input type="text" disabled></td>
             <td><input type="text" name="semesterName" value="<%= item.semesterName %>"></td>
             <td><input type="number" name="startDate" value="<%= item.startDate %>"></td>
             <td><input type="number" name="endDate" value="<%= item.endDate %>"></td>
